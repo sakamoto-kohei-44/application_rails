@@ -21,7 +21,7 @@ FactoryBot.define do
     sequence(:name) { |n| "admin-#{n}" }
     password { 'password' }
     password_confirmation { 'password' }
-    role { :writer }
+    role { :admin }
 
     trait :admin do
       sequence(:name) { |n| "admin-#{n}" }
