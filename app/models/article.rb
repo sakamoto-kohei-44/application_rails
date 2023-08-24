@@ -63,7 +63,7 @@ class Article < ApplicationRecord
   scope :new_arrivals, -> { viewable.order(published_at: :desc) }
   scope :by_category, ->(category_id) { where(category_id: category_id) }
   scope :title_contain, ->(word) { where('title LIKE ?', "%#{word}%") }
-  scope :past_published, ->{ where('published_at <= ?', Time.current) }
+  scope :past_published, -> { where('published_at <= ?', Time.current) }
 
   def build_body(controller)
     result = ''
@@ -92,25 +92,25 @@ class Article < ApplicationRecord
     @prev_article ||= Article.viewable.order(published_at: :desc).find_by('published_at < ?', published_at)
   end
 
-  def publishable? #1
+  def publishable?
     Time.current >= published_at
   end
 
-  def message_on_published #2
+  def message_on_published
     if published?
-      '公開しました'
+      '記事を公開しました'
     elsif publish_wait?
-      '公開待ちにしました。'
+      '記事を公開待ちにしました'
     end
   end
 
-  def adjust_state #3
-    return if draft? 
+  def adjust_state
+    return if draft?
 
     self.state = if publishable?
-                    :published
+                   :published
                  else
-                    :publish_wait
+                   :publish_wait
                  end
   end
 end
