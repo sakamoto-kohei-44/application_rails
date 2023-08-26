@@ -64,8 +64,8 @@ class Article < ApplicationRecord
   scope :by_tag, ->(tag_id) { joins(:tags).where(article_tags: { tag_id: tag_id }) }
   scope :by_author, ->(author_id) { where(author_id: author_id) }
   scope :title_contain, ->(word) { where('title LIKE ?', "%#{word}%") }
-  scope :body_contain, ->(word) { 
-    joins(:sentences).merge(Sentence.where('sentences.body LIKE ?', "%#{word}%")) 
+  scope :body_contain, lambda { |word|
+    joins(:sentences).merge(Sentence.where('sentences.body LIKE ?', "%#{word}%"))
   }
 
   def build_body(controller)
