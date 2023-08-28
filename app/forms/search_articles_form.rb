@@ -8,7 +8,6 @@ class SearchArticlesForm
   attribute :title, :string
   attribute :body, :string
 
-
   def search
     relation = Article.distinct
     title_words.each do |word|
