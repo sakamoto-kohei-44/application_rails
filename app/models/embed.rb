@@ -21,4 +21,3 @@ class Embed < ApplicationRecord
     identifier.split('/').last if youtube?
   end
 end
-
