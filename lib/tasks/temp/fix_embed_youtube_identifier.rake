@@ -5,4 +5,3 @@ namespace :fix_embed_youtube_identifier do
       embed.update(identifier: "https://youtu.be/#{embed.identifier}")
     end
   end
-end
