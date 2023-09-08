@@ -40,12 +40,14 @@ class Article < ApplicationRecord
   has_one_attached :eye_catch
 
   enum state: { draft: 0, published: 1, publish_wait: 2 }
+  enum eyecatch_position: { center: 0, left: 1, right: 2 }
 
   validates :slug, slug_format: true, uniqueness: true, length: { maximum: 255 }, allow_blank: true
   validates :title, presence: true, uniqueness: true, length: { maximum: 255 }
   validates :description, length: { maximum: 1000 }, allow_blank: true
   validates :state, presence: true
   validates :eye_catch, attachment: { purge: true, content_type: %r{\Aimage/(png|jpeg)\Z}, maximum: 10_485_760 }
+  validates :eyecatch_width, numericality: { less_than_or_equal_to: 700, greater_than_or_equal_to: 100 }, allow_blank: true
 
   with_options if: :published? do
     validates :slug, slug_format: true, presence: true, length: { maximum: 255 }
@@ -67,6 +69,7 @@ class Article < ApplicationRecord
   scope :title_contain, ->(word) { where('title LIKE ?', "%#{word}%") }
   scope :body_contain, ->(body) { joins(:sentences).merge(where('sentences.body LIKE ?', "%#{body}%")) }
   scope :past_published, -> { where('published_at <= ?', Time.current) }
+  scope :published_yesterday, -> { where(published_at: 1.day.ago.all_day) }
 
   def build_body(controller)
     result = ''

@@ -16,7 +16,6 @@ class Admin::ArticlesController < ApplicationController
 
   def create
     authorize(Article)
-
     @article = Article.new(article_params)
     @article.state = :draft
 
@@ -56,7 +55,7 @@ class Admin::ArticlesController < ApplicationController
 
   def article_params
     params.require(:article).permit(
-      :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, tag_ids: []
+      :title, :description, :slug, :state, :published_at, :eye_catch, :category_id, :author_id, :eyecatch_position, :eyecatch_width, tag_ids: []
     )
   end
 
